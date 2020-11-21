@@ -1,5 +1,5 @@
 import axios from "axios";
-let apiKey = process.env.NODE_ENV || process.env.REACT_APP_API_KEY;
+let apiKey = process.env.REACT_APP_API_KEY;
 const apiSearch = async () => {
   try {
     const result = await axios.get(

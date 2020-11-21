@@ -7,6 +7,7 @@ import "./App.css";
 import SearchBar from "./components/SearchBar";
 import Content from "./components/Content";
 
+let apiKey = process.env.REACT_APP_API_KEY;
 const App = () => {
   const [content, setContent] = useState([]);
   const [error, setError] = useState(null);
@@ -23,7 +24,7 @@ const App = () => {
       const fetchData = await axios.get(
         `https://www.googleapis.com/youtube/v3/search?q=` +
           video +
-          `&&type=video&&part=snippet&&key=${process.env.REACT_APP_API_KEY}`
+          `&&type=video&&part=snippet&&key=${apiKey}`
       );
       setContent(fetchData.data.items);
     } else {
