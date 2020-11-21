@@ -1,26 +1,41 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import apiSearch from "./api/apiSearch";
+import "bootstrap/dist/css/bootstrap.min.css";
+import axios from "axios";
+import Header from "./components/Header";
+import "./App.css";
+import SearchBar from "./components/SearchBar";
+import Content from "./components/Content";
 
-function App() {
+const App = () => {
+  const [content, setContent] = useState([]);
+  const [error, setError] = useState(null);
+  useEffect(() => {
+    apiSearch()
+      .then((response) => setContent(response.data.items))
+      .catch((error) => setError(error.message));
+    console.log(error);
+  }, []);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const video = e.target.elements.video.value;
+    if (video) {
+      const fetchData = await axios.get(
+        `https://www.googleapis.com/youtube/v3/search?q=` +
+          video +
+          `&&type=video&&part=snippet&&key=${process.env.REACT_APP_API_KEY}`
+      );
+      setContent(fetchData.data.items);
+    } else {
+      setError("Input some value");
+    }
+  };
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container">
+      <Header />
+      <SearchBar handleSubmit={handleSubmit} />
+      <Content content={content} error={error} />
     </div>
   );
-}
-
+};
 export default App;
