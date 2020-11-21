@@ -15,7 +15,7 @@ const App = () => {
       .then((response) => setContent(response.data.items))
       .catch((error) => setError(error.message));
     console.log(error);
-  }, []);
+  });
   const handleSubmit = async (e) => {
     e.preventDefault();
     const video = e.target.elements.video.value;
